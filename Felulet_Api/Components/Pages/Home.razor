@@ -1,0 +1,39 @@
+﻿@page "/"
+@using Api_gyakszi.DAL.Model
+@inject HttpClient HttpClient
+
+<PageTitle>Home</PageTitle>
+
+<h3>Products:</h3>
+<table class="table-bordered border-success p-5 m-2 col-lg-5">
+    <thead class="col-form-label-lg text-center text-decoration-underline bg-success text-light">
+        <tr >
+            <th >Megnevezés</th>
+            <th >Kategória</th>
+            <th >Ár</th>
+            <th >Leírás</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var product in productList)
+        {
+            <tr>
+                <th>@product.Megnevezes</th>
+                <th>@product.Kategoria</th>
+                <th>@product.Ar</th>
+                <th>@product.Leiras</th>
+            </tr>
+        }
+      
+    </tbody>
+</table>
+
+@code{
+    List<ProductVM> productList = new();
+
+    protected override async Task OnInitializedAsync()
+    {
+        productList = await HttpClient.GetFromJsonAsync<List<ProductVM>>("api/Product");
+    }
+
+}
