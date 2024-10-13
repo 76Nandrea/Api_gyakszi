@@ -1,6 +1,8 @@
 ﻿@page "/"
 @using Api_gyakszi.DAL.Model
+@using Microsoft.AspNetCore.Components.QuickGrid
 @inject HttpClient HttpClient
+@rendermode InteractiveServer
 
 <PageTitle>Home</PageTitle>
 
@@ -28,12 +30,31 @@
     </tbody>
 </table>
 
+
+
+
+<QuickGrid Class="table" Items="productVMs" Pagination="pagination">
+    <PropertyColumn Title="Megnevezés" Property="@(m=>m.Megnevezes)" Sortable="true" />
+    <PropertyColumn Title="Kategória" Property="@(k=>k.Kategoria)" Sortable="true" />
+    <PropertyColumn Title="Ár" Property="@(x=>x.Ar)" Sortable="true" />
+    <PropertyColumn Title="Leiírás" Property="@(x=>x.Leiras)" />>
+
+</QuickGrid>
+
+<Paginator State="pagination" />
+
 @code{
     List<ProductVM> productList = new();
 
     protected override async Task OnInitializedAsync()
     {
         productList = await HttpClient.GetFromJsonAsync<List<ProductVM>>("api/Product");
+        productVMs = productList.AsQueryable();
     }
 
+    private IQueryable<ProductVM>? productVMs;
+  
+    PaginationState pagination = new PaginationState { ItemsPerPage = 5 };
 }
+
+    

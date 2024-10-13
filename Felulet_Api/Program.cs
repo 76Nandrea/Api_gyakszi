@@ -11,6 +11,10 @@ builder.Services.AddScoped(sp =>
     {
         BaseAddress=new Uri (builder.Configuration.GetValue<string>("APIURL"))
     });
+
+
+builder.Services.AddQuickGridEntityFrameworkAdapter();
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
